@@ -10,8 +10,8 @@ readonly SCRIPT_NAME="$(basename "$0")"
 function install_dependencies {
   echo "Installing dependencies"
 
-  sudo yum update -y
-  sudo yum install -y curl unzip jq
+  sudo apt-get update -y
+  sudo apt-get install -y curl unzip jq
 }
 
 function create_consul_install_paths {
@@ -57,16 +57,12 @@ function install_binary {
     echo "Adding symlink to $consul_dest_path in $symlink_path"
     sudo ln -s "$consul_dest_path" "$symlink_path"
   fi
-
-  echo "Copying Consul run script to $run_consul_dest_path"
-  sudo cp "$SCRIPT_DIR/../run-consul/run-consul" "$run_consul_dest_path"
-  sudo chmod a+x "$run_consul_dest_path"
 }
 
 path=/home/ec2-user/consul
 version=1.5.3
 
-#install_dependencies
+install_dependencies
 create_consul_install_paths "$path"
-#fetch_binary "$version"
+fetch_binary "$version"
 install_binary "$path"
